@@ -1,1 +1,1 @@
-import pyrewall.api.routes.auth
+import pyrewall.api.routes.api

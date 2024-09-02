@@ -1,6 +1,6 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
+from sqlalchemy import create_engine
 from sqlalchemy import pool
 
 from alembic import context
@@ -18,12 +18,28 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+from pyrewall.core.db.models.base_model import Base
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
+
+from dotenv import find_dotenv, load_dotenv
+ENV_FILE = find_dotenv()
+if ENV_FILE:
+    load_dotenv(ENV_FILE)
+
+from os import environ as env
+
+_database_driver = env['DATABASE_DRIVER']
+_database_user = env['DATABASE_USER']
+_database_password = env['DATABASE_PASSWORD']
+_database_host = env['DATABASE_HOST']
+_database_name = env['DATABASE_NAME']
+
+_database_connection_string = f'{_database_driver}://{_database_user}:{_database_password}@{_database_host}/{_database_name}'
 
 
 def run_migrations_offline() -> None:
@@ -38,9 +54,8 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=url,
+        url=_database_connection_string,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -57,11 +72,7 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
-    )
+    connectable = create_engine(_database_connection_string, poolclass=pool.NullPool)
 
     with connectable.connect() as connection:
         context.configure(

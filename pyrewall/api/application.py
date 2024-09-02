@@ -26,6 +26,10 @@ VERSION = env.get('PYREWALL_VERSION', '0.0.0-dev')
 info = Info(title='Pyrewall API', version=VERSION)
 app = OpenAPI(__name__, info=info, security_schemes=security_schemes)
 
+if env.get('PYREWALL_API_ENABLE_CORS', 'false') == 'true':
+    from flask_cors import CORS
+    CORS(app)
+
 @app.context_processor
 def context_data() -> dict:
     return {

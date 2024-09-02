@@ -16,7 +16,7 @@ class Group(Base):
     name: Mapped[str] = mapped_column(String(50), index=True, unique=True, nullable=False)
     description: Mapped[str] = mapped_column(Text)
 
-    created_date: Mapped[datetime] - mapped_column(DateTime, insert_default=func.current_timestamp(), default=None, nullable=False)
+    created_date: Mapped[datetime] = mapped_column(DateTime, insert_default=func.current_timestamp(), default=None, nullable=False)
     created_by: Mapped[UUID] = mapped_column(ForeignKey('users.id'), nullable=False)
 
     modified_date: Mapped[datetime] = mapped_column(DateTime, insert_default=func.current_timestamp(), onupdate=func.current_timestamp(), default=None, nullable=False)

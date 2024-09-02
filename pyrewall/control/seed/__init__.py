@@ -1,0 +1,2 @@
+def seed(args):
+    pass

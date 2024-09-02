@@ -20,7 +20,7 @@ class AuthSource(Base):
 
     config: Mapped[dict] = mapped_column(JSON, nullable=True)
 
-    created_date: Mapped[datetime] - mapped_column(DateTime, insert_default=func.current_timestamp(), default=None, nullable=False)
+    created_date: Mapped[datetime] = mapped_column(DateTime, insert_default=func.current_timestamp(), default=None, nullable=False)
     created_by: Mapped[UUID] = mapped_column(ForeignKey('users.id'), nullable=False)
 
     modified_date: Mapped[datetime] = mapped_column(DateTime, insert_default=func.current_timestamp(), onupdate=func.current_timestamp(), default=None, nullable=False)
