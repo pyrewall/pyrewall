@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package pyrewall;
+
+service SystemInfo {
+    rpc GetSystemInfo (voidNoArgs) returns (SystemInfoResponse);
+}
+
+message voidNoArgs {}
+
+message SystemInfoResponse {
+    string hostname = 1;
+}
