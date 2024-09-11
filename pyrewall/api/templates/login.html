@@ -1,0 +1,27 @@
+{% extends "login_template.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <div style="background-image: url({{url_for('static',filename='backgrounds/cincinnati-bridge.jpg')}}); background-size: cover;" class="w-full h-full">
+        <div class="w-full h-full md:h-[75vh] flex">
+            <div class="my-auto mx-auto md:ml-auto md:mr-96">
+                <h2 class="text-4xl text-center text-white p-4 drop-shadow-lg"><span class="font-bold">Pyrewall</span> | <span class="font-normal">Login</span></h2>
+                <form method="post">
+                    <div>
+                        <input placeholder="Username" name="username" class="w-72 rounded px-2 py-1 selection:border-blue-600"/>
+                    </div>
+                    <div class="my-2">
+                        <input type="password" placeholder="Password" name="password" class="w-72 rounded px-2 py-1 selection:border-blue-600"/>
+                    </div>
+                    <div>
+                        <button type="submit" class="w-72 rounded px-2 py-1 text-white bg-slate-950 hover:bg-slate-800">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div style="right: 0; bottom: 0;" class="absolute p-1 text-center text-white text-sm">
+            v{{version}}
+        </div>
+    </div>
+{% endblock %}

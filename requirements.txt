@@ -8,5 +8,9 @@ sentry-sdk==2.13.0
 grpcio==1.66.1
 gunicorn==23.0.0
 python-dotenv==1.0.1
+uuid7==0.1.0
+passlib==1.7.4
+argon2-cffi==23.1.0
+webauthn==2.1.0
 
 pydepinj @ git+https://github.com/thebmw/pydepinj.git@v0.4.0

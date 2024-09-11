@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package pyrewall.auth;
+
+message voidNoArgs {}
+
+service UsersService {
+    rpc GetAllUsers (voidNoArgs) returns (AllUsersResponse);
+}
+
+message User {
+    uint32 unixid = 1;
+    string username = 2;
+    string fullname = 3;
+    string shell = 4;
+}
+
+message AllUsersResponse {
+    repeated User users = 1;
+}
