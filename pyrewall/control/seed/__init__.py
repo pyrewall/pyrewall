@@ -1,2 +1,3 @@
+from .auth import seed_auth
 def seed(args):
-    pass
+    seed_auth(args.dev)

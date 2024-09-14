@@ -6,6 +6,8 @@ from pprint import pprint
 
 from .seed import seed
 
+from pyrewall.core.dependency_injection import di
+
 def main(argv: list[str] = None):
     if argv is None:
         argv = sys.argv[1:]
@@ -15,10 +17,12 @@ def main(argv: list[str] = None):
     sub_arg_parsers = arg_parser.add_subparsers()
 
     seed_args = sub_arg_parsers.add_parser('seed')
+    seed_args.add_argument('--dev', action='store_true')
     seed_args.set_defaults(func=seed)
 
     args = arg_parser.parse_args(argv)
     if hasattr(args, 'func'):
-        args.func(args)
+        with di.di_scope():
+            args.func(args)
     else:
         arg_parser.print_usage()
