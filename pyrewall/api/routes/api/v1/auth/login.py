@@ -20,4 +20,4 @@ def api_v1_auth_login(body: LoginRequest, auth_service: AuthenticationService):
     if user is None:
         raise Unauthorized()
     
-    return user
+    return user.model_dump()

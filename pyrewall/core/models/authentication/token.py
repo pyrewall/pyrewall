@@ -1,4 +1,5 @@
 from pydantic import BaseModel
 
 class Token(BaseModel):
-    pass
+    access_token: str
+    expires_in: int

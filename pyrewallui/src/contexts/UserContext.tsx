@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import AuthenticatedUser from "../types/AuthenticatedUser";
 import LoginPage from "../pages/Login";
+import useSessionStorageBackedState from "../libs/useSessionStorageBackedState";
 
 export interface UserContextData {
     user: AuthenticatedUser;
@@ -15,7 +16,7 @@ interface UserContextProviderProps {
 }
 
 export const UserContextProvider: React.FC<UserContextProviderProps> = (props) => {
-    const [user, setUser] = useState<AuthenticatedUser | undefined>();
+    const [user, setUser] = useSessionStorageBackedState<AuthenticatedUser | undefined>('pyrewall-user', undefined);
 
     if (user == null) {
         return <LoginPage setUser={setUser} />
