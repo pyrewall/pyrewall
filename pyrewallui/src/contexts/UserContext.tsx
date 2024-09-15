@@ -5,6 +5,7 @@ import useSessionStorageBackedState from "../libs/useSessionStorageBackedState";
 
 export interface UserContextData {
     user: AuthenticatedUser;
+    logout: () => void;
 };
 
 const UserContext = createContext<UserContextData | null>(null);
@@ -22,8 +23,13 @@ export const UserContextProvider: React.FC<UserContextProviderProps> = (props) =
         return <LoginPage setUser={setUser} />
     }
 
+    const logout = () => {
+        setUser(undefined);
+    }
+
     const data: UserContextData = {
-        user
+        user,
+        logout
     };
 
     return <UserContext.Provider value={data}>
