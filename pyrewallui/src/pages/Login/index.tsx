@@ -1,12 +1,14 @@
 import React, { FormEvent, useState } from "react";
 import loginBackground from '../../assets/backgrounds/cincinnati-bridge.jpg';
 import AuthenticatedUser, { AuthenticatedUserSchema } from "../../types/AuthenticatedUser";
+import { useUnauthenticatedApi } from "../../libs/useApi";
 
 interface LoginPageProps {
     setUser: (user: AuthenticatedUser) => void;
 }
 
 const LoginPage: React.FC<LoginPageProps> = (props) => {
+    const api = useUnauthenticatedApi();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -17,6 +19,8 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
                 username,
                 password
             };
+            const test = await api.post('/api/v1/auth/login', {body: loginData});
+            console.log(test);
 
             const response = await fetch(`${import.meta.env.VITE_API_URL}api/v1/auth/login`, {
                 method: 'POST',

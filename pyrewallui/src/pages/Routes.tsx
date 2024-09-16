@@ -1,6 +1,8 @@
 import React from "react";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import Layout from "../components/Layout";
+import SystemGroupsPage from "./System/Groups";
+import SystemUsersPage from "./System/Users";
 
 const router = createBrowserRouter([
     {
@@ -14,6 +16,19 @@ const router = createBrowserRouter([
             {
                 path: 'dashboard',
                 element: <></>
+            },
+            {
+                path: 'system',
+                children: [
+                    {
+                        path: 'groups',
+                        element: <SystemGroupsPage />
+                    },
+                    {
+                        path: 'users',
+                        element: <SystemUsersPage />
+                    }
+                ]
             }
         ]
     }
