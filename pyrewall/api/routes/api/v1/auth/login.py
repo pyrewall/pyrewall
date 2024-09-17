@@ -1,6 +1,7 @@
 from werkzeug.exceptions import Unauthorized
 
 from pyrewall.api.application import app, security
+from pyrewall.api.tags import auth_tag
 from pyrewall.core.dependency_injection import di
 
 from pyrewall.core.models.authentication.authenticated_user import AuthenticatedUser
@@ -10,6 +11,7 @@ from pyrewall.core.services.authentication_service import AuthenticationService
 
 @app.post('/api/v1/auth/login',
           security=security,
+          tags=[auth_tag],
           responses={
               200: AuthenticatedUser
           })
