@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState } from "react";
-import AuthenticatedUser from "../types/AuthenticatedUser";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import LoginPage from "../pages/Login";
 import useSessionStorageBackedState from "../libs/useSessionStorageBackedState";
+import { AuthenticatedUser } from "../api";
 
 export interface UserContextData {
     user: AuthenticatedUser;
@@ -19,12 +19,29 @@ interface UserContextProviderProps {
 export const UserContextProvider: React.FC<UserContextProviderProps> = (props) => {
     const [user, setUser] = useSessionStorageBackedState<AuthenticatedUser | undefined>('pyrewall-user', undefined);
 
-    if (user == null) {
-        return <LoginPage setUser={setUser} />
-    }
-
     const logout = () => {
         setUser(undefined);
+    }
+
+    useEffect(() => {
+        if (user == null) return;
+
+        const expires = new Date(user.token.expires_at).getTime()
+        const diff = expires - (new Date().getTime());
+
+        console.log("Session expires in ", diff)
+
+        const timeout = setTimeout(() => {
+            logout()
+        }, diff);
+
+        return () => {
+            clearTimeout(timeout);
+        }
+    }, [user])
+
+    if (user == null) {
+        return <LoginPage setUser={setUser} />
     }
 
     const data: UserContextData = {

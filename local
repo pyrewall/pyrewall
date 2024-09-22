@@ -19,7 +19,7 @@ with open('VERSION', 'r') as version_file:
 def main():
     
     parser = ArgumentParser()
-    parser.add_argument('role', choices=['api', 'cli', 'priv', 'ctl'])
+    parser.add_argument('role', choices=['api', 'cli', 'priv', 'ctl', 'test'])
     args = parser.parse_args(argv[1:2])
 
     match args.role:
@@ -32,6 +32,10 @@ def main():
         case 'ctl':
             from pyrewall.control import main
             main(argv[2:])
+        case 'test':
+            from pyrewall.core.models.user.user import User
+            from pprint import pprint
+            pprint(User.model_json_schema(True))
 
 if __name__ == '__main__':
     main()

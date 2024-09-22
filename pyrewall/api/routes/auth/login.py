@@ -4,6 +4,7 @@ from pyrewall.core.services.authentication_service import AuthenticationService
 
 from pyrewall.core.dependency_injection import di
 
+
 from ...application import app
 
 @app.route('/auth/login', methods=['GET'])

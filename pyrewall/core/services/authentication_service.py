@@ -1,6 +1,7 @@
 import logging
 
 from abc import ABC, abstractmethod
+from datetime import datetime, timedelta, UTC
 from typing import Optional
 
 from ..db.database_session import DatabaseSession
@@ -54,7 +55,8 @@ class AuthenticationServiceImpl(AuthenticationService):
                     user=user,
                     token=Token(
                         access_token=token,
-                        expires_in=(60 * 60)
+                        expires_in=(60 * 60),
+                        expires_at=(datetime.now(UTC) + timedelta(minutes=60))
                     )
                 )
         

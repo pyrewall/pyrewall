@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from uuid import UUID
 
 from ..db.database_session import DatabaseSession
 from ..db.models.user import User as DBUser
@@ -7,6 +8,18 @@ from ..dependency_injection import di
 from ..models.user.user import User
 
 class UserService(ABC):
+    @abstractmethod
+    def get_users(self) -> list[User]:
+        raise NotImplementedError()
+    
+    @abstractmethod
+    def get_user_by_id(self, user_id: UUID) -> User | None:
+        raise NotImplementedError()
+    
+    @abstractmethod
+    def get_user_by_unix_id(self, unix_user_id: int) -> User | None:
+        raise NotImplementedError()
+
     @abstractmethod
     def get_user_by_username(self, username: str) -> User | None:
         raise NotImplementedError()
@@ -41,10 +54,25 @@ class UserServiceImpl(UserService):
         )
 
         return user
-        
+
+    def get_users(self) -> list[User]:
+        users = self._db.session.query(DBUser).all()
+
+        return list(map(self._db_to_model, users))
+
+    def get_user_by_id(self, user_id: UUID) -> User | None:
+        user = self._db.session.query(DBUser).filter(DBUser.id == user_id).one_or_none()
+
+        return self._db_to_model(user)
+
+    def get_user_by_unix_id(self, unix_user_id: int) -> User | None:
+        user = self._db.session.query(DBUser).filter(DBUser.unix_id == unix_user_id).one_or_none()
+
+        return self._db_to_model(user)
 
     def get_user_by_username(self, username: str) -> User | None:
         user = self._db.session.query(DBUser).filter(DBUser.username == username).one_or_none()
+        
         return self._db_to_model(user)    
 
 di.register_scoped(UserService, UserServiceImpl)

@@ -9,7 +9,11 @@ from pyrewall.core.models.authentication.login_request import LoginRequest
 
 from pyrewall.core.services.authentication_service import AuthenticationService
 
+from pyrewall.utils import http
+
 @app.post('/api/v1/auth/login',
+          summary='Login with username/password',
+          operation_id='auth_login',
           security=security,
           tags=[auth_tag],
           responses={
@@ -22,4 +26,4 @@ def api_v1_auth_login(body: LoginRequest, auth_service: AuthenticationService):
     if user is None:
         raise Unauthorized()
     
-    return user.model_dump()
+    return http.ok(user)
