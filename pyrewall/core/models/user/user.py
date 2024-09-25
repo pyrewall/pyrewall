@@ -14,8 +14,8 @@ class User(BaseModel):
     
     created_date: datetime
     created_by_id: UUID
-    created_by_user: Optional["User"]
+    # created_by_user: Optional["User"]
 
     modified_date: datetime
     modified_by_id: UUID
-    modified_by_user: Optional["User"]
+    # modified_by_user: Optional["User"]

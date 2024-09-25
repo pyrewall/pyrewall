@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom"
 import Layout from "../components/Layout";
 import SystemGroupsPage from "./System/Groups";
 import SystemUsersPage from "./System/Users";
+import SystemCreateUserPage from "./System/Users/Create";
 
 const router = createBrowserRouter([
     {
@@ -26,7 +27,13 @@ const router = createBrowserRouter([
                     },
                     {
                         path: 'users',
-                        element: <SystemUsersPage />
+                        element: <SystemUsersPage />,
+                        children: [
+                            {
+                                'path': 'new',
+                                element: <SystemCreateUserPage />
+                            }
+                        ]
                     }
                 ]
             }

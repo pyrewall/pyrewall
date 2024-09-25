@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.56.2",
     "@tanstack/react-query-devtools": "^5.56.2",
+    "@tanstack/react-table": "^8.20.5",
     "@zodios/core": "^10.9.6",
     "axios": "^1.0.0",
     "bootstrap-icons": "^1.11.3",

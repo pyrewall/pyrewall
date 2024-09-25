@@ -14,7 +14,6 @@ export type Token = {
 };
 export type User = {
   created_by_id: string;
-  created_by_user: (User | null) | Array<User | null>;
   created_date: string;
   email: (string | null) | Array<string | null>;
   enabled: boolean;
@@ -22,7 +21,6 @@ export type User = {
   full_name: (string | null) | Array<string | null>;
   id: string;
   modified_by_id: string;
-  modified_by_user: (User | null) | Array<User | null>;
   modified_date: string;
   unix_id: number;
   username: string;
@@ -39,25 +37,21 @@ const Token: z.ZodType<Token> = z
     expires_in: z.number().int(),
   })
   .passthrough();
-const User: z.ZodType<User> = z.lazy(() =>
-  z
-    .object({
-      created_by_id: z.string().uuid(),
-      created_by_user: z.union([User, z.null()]),
-      created_date: z.string().datetime({ offset: true }),
-      email: z.union([z.string(), z.null()]),
-      enabled: z.boolean(),
-      expires: z.union([z.string(), z.null()]),
-      full_name: z.union([z.string(), z.null()]),
-      id: z.string().uuid(),
-      modified_by_id: z.string().uuid(),
-      modified_by_user: z.union([User, z.null()]),
-      modified_date: z.string().datetime({ offset: true }),
-      unix_id: z.number().int(),
-      username: z.string(),
-    })
-    .passthrough()
-);
+const User: z.ZodType<User> = z
+  .object({
+    created_by_id: z.string().uuid(),
+    created_date: z.string().datetime({ offset: true }),
+    email: z.union([z.string(), z.null()]),
+    enabled: z.boolean(),
+    expires: z.union([z.string(), z.null()]),
+    full_name: z.union([z.string(), z.null()]),
+    id: z.string().uuid(),
+    modified_by_id: z.string().uuid(),
+    modified_date: z.string().datetime({ offset: true }),
+    unix_id: z.number().int(),
+    username: z.string(),
+  })
+  .passthrough();
 const AuthenticatedUser: z.ZodType<AuthenticatedUser> = z
   .object({ token: Token, user: User })
   .passthrough();
@@ -81,7 +75,17 @@ const ValidationErrorModel = z
   .partial()
   .passthrough();
 const UserList: z.ZodType<UserList> = z.array(User);
-const CreateUser = z.object({}).partial().passthrough();
+const CreateUser = z
+  .object({
+    email: z.union([z.string(), z.null()]).optional(),
+    enabled: z.boolean(),
+    expires: z.union([z.string(), z.null()]).optional(),
+    full_name: z.union([z.string(), z.null()]).optional(),
+    password: z.string(),
+    unix_id: z.union([z.number(), z.null()]).optional(),
+    username: z.string(),
+  })
+  .passthrough();
 
 export const schemas = {
   LoginRequest,
@@ -145,7 +149,7 @@ export const UserEndpoints = makeApi([
       {
         name: "body",
         type: "Body",
-        schema: z.object({}).partial().passthrough(),
+        schema: CreateUser,
       },
     ],
     response: User,

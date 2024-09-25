@@ -23,15 +23,15 @@ class TokenServiceImpl(TokenService):
             "iat": datetime.now(UTC),
             "exp": (datetime.now(UTC) + timedelta(minutes=60))
         }
-        with open(f'{PYREWALL_CONFIG_DIR}private_key.pem', 'rb') as key_file:
+        with open(f'{PYREWALL_CONFIG_DIR}token_ecdsa.key', 'rb') as key_file:
             key = key_file.read()
-        token = jwt.encode(payload, key, algorithm="RS256")
+        token = jwt.encode(payload, key, algorithm="ES256")
         return token
         
     def validate_token(self, token: str) -> UUID:
-        with open(f'{PYREWALL_CONFIG_DIR}public_key.pem', 'rb') as key_file:
+        with open(f'{PYREWALL_CONFIG_DIR}token_ecdsa.pem', 'rb') as key_file:
             key = key_file.read()
-        payload = jwt.decode(token, key, algorithms=['RS256'])
+        payload = jwt.decode(token, key, algorithms=['ES256'])
         return UUID(payload['sub'])
         
 
