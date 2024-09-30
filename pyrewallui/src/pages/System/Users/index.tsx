@@ -2,7 +2,7 @@ import React from "react";
 import { User, useUserApi } from "../../../api";
 import { useQuery } from "@tanstack/react-query";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const columnHelper = createColumnHelper<User>();
 
@@ -62,6 +62,7 @@ const SystemUsersPage: React.FC = () => {
                         ))}
                     </tbody>
                 </table>
+                <Link to='new'>New User</Link>
             </div>
         </div>
         <Outlet />

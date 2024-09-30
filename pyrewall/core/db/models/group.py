@@ -3,7 +3,7 @@ from typing import Any
 from uuid import UUID
 from uuid_extensions import uuid7
 
-from sqlalchemy import Uuid, String, Text, DateTime, Boolean, ForeignKey, Integer, func
+from sqlalchemy import Uuid, String, Text, DateTime, Boolean, ForeignKey, Integer, ARRAY, func
 from sqlalchemy.orm import mapped_column, Mapped
 
 from .base_model import Base
@@ -15,6 +15,8 @@ class Group(Base):
     unix_id: Mapped[int] = mapped_column(Integer, index=True, unique=True, nullable=False)
     name: Mapped[str] = mapped_column(String(50), index=True, unique=True, nullable=False)
     description: Mapped[str] = mapped_column(Text)
+
+    permissions: Mapped[list[str]] = mapped_column(ARRAY(String))
 
     created_date: Mapped[datetime] = mapped_column(DateTime, insert_default=func.current_timestamp(), default=None, nullable=False)
     created_by: Mapped[UUID] = mapped_column(ForeignKey('users.id'), nullable=False)

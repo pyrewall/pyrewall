@@ -46,6 +46,11 @@ def ok(data: any = None, headers: dict = {}):
     """Returns a json encoded 200 OK Response"""
     return json_response(200, data, headers)
 
+def ok_or_not_found(data: any = None):
+    if data is None:
+        return not_found()
+    return ok(data)
+
 def created(data: any = None):
     """Returns a json encoded 201 Created Response"""
     return json_response(201, data)

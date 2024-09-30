@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 from werkzeug.exceptions import Unauthorized
 
 from pyrewall.api.application import app, security
@@ -17,29 +18,21 @@ from pyrewall.utils import http
 
 from pyrewall.core.permissions import Users
 
-@app.get('/api/v1/users',
-         summary='Get all users',
-         operation_id='get_users_list',
+class UserByUsernamePath(BaseModel):
+    username: str
+
+@app.get('/api/v1/users/by-username/<username>',
+         summary='Get user by username',
+         operation_id='get_user_by_username',
          security=security,
          tags=[user_tag],
          responses={
-              200: UserList
+              200: User,
+              404: None
          })
-@api_function(required_permission=Users.list)
-def api_v1_users_list(user_service: UserService):
-    users = user_service.get_users()
+@api_function(required_permission=Users.get)
+def api_v1_users_get_by_username(path: UserByUsernamePath, user_service: UserService):
+    user = user_service.get_user_by_username(path.username)
 
-    return http.ok(users)
-
-@app.post('/api/v1/users',
-          summary='Create new user',
-          operation_id='create_user',
-          security=security,
-          tags=[user_tag],
-          responses={
-              200: User
-          })
-@api_function(required_permission=Users.create)
-def api_v1_users_post(body:CreateUser, user_service: UserService):
-    raise NotImplementedError()
+    return http.ok_or_not_found(user)
 

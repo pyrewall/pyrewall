@@ -132,6 +132,27 @@ export const useAuthenticationApi = () => {
   });
 };
 
+export const PermssionsEndpoints = makeApi([
+  {
+    method: "get",
+    path: "/api/v1/permissions",
+    alias: "get_permissions_list",
+    requestFormat: "json",
+    response: z.void(),
+  },
+]);
+
+export const usePermssionsApi = () => {
+  const userContext = useUserContext();
+  return new Zodios(import.meta.env.VITE_API_URL, PermssionsEndpoints, {
+    axiosConfig: {
+      headers: {
+        Authorization: `Bearer ${userContext.user.token.access_token}`,
+      },
+    },
+  });
+};
+
 export const UserEndpoints = makeApi([
   {
     method: "get",
@@ -150,6 +171,27 @@ export const UserEndpoints = makeApi([
         name: "body",
         type: "Body",
         schema: CreateUser,
+      },
+    ],
+    response: User,
+    errors: [
+      {
+        status: 422,
+        description: `Unprocessable Entity`,
+        schema: z.array(ValidationErrorModel),
+      },
+    ],
+  },
+  {
+    method: "get",
+    path: "/api/v1/users/:id",
+    alias: "get_user_by_id",
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "id",
+        type: "Path",
+        schema: z.string().uuid(),
       },
     ],
     response: User,

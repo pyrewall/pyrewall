@@ -10,7 +10,7 @@ class User(BaseModel):
     enabled: bool
     full_name: Optional[str]
     email: Optional[str]
-    expires: Optional[datetime]
+    expires: Optional[datetime] = Field(examples=[None])
     
     created_date: datetime
     created_by_id: UUID
