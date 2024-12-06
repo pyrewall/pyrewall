@@ -48,7 +48,7 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
             </div>
         </div>
         <div style={{right: 0, bottom: 0}} className="absolute p-1 text-center text-white text-sm">
-            v{'test'}
+            v{import.meta.env.VITE_PYREWALL_VERSION}
         </div>
         </div>
     </>;

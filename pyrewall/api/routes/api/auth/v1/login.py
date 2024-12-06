@@ -1,6 +1,6 @@
 from werkzeug.exceptions import Unauthorized
 
-from pyrewall.api.application import app, security
+from pyrewall.api.application import app
 from pyrewall.api.tags import auth_tag
 from pyrewall.core.dependency_injection import di
 
@@ -11,16 +11,15 @@ from pyrewall.core.services.authentication_service import AuthenticationService
 
 from pyrewall.utils import http
 
-@app.post('/api/v1/auth/login',
+@app.post('/api/auth/v1/login',
           summary='Login with username/password',
           operation_id='auth_login',
-          security=security,
           tags=[auth_tag],
           responses={
               200: AuthenticatedUser
           })
 @di.scoped_inject
-def api_v1_auth_login(body: LoginRequest, auth_service: AuthenticationService):
+def api_auth_v1_login(body: LoginRequest, auth_service: AuthenticationService):
     user = auth_service.authenticate_user_with_username_password(body.username, body.password)
 
     if user is None:

@@ -8,4 +8,6 @@ class Revision(Base):
     __tablename__ = 'revision'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True, index=True, unique=True, nullable=False)
-    
+    created_date: Mapped[datetime] = mapped_column(DateTime, insert_default=datetime.now(), default=None, nullable=False)
+    commit_date: Mapped[datetime] = mapped_column(DateTime, default=None, nullable=True)
+    applied_date: Mapped[datetime] = mapped_column(DateTime, default=None, nullable=True)

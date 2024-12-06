@@ -23,7 +23,7 @@ from pyrewall.core.permissions import Users
 class UserPath(BaseModel):
     id: UUID
 
-@app.get('/api/v1/users/<uuid:id>',
+@app.get('/api/management/v1/users/<uuid:id>',
          summary='Get user by id',
          operation_id='get_user_by_id',
          security=security,
@@ -38,7 +38,7 @@ def api_v1_users_get(path: UserPath, user_service: UserService):
     return http.ok_or_not_found(user)
 
 
-@app.patch('/api/v1/users/<uuid:id>',
+@app.patch('/api/management/v1/users/<uuid:id>',
          summary='Get user by id',
          operation_id='get_user_by_id',
          security=security,
@@ -50,9 +50,9 @@ def api_v1_users_get(path: UserPath, user_service: UserService):
 def api_v1_users_patch(path: UserPath, body: UpdateUser, user_service: UserService):
     user = user_service.update_user(path.id, body)
 
-    return http.ok_or_not_found(user)
+    return http.ok(user)
 
-@app.delete('/api/v1/users/<uuid:id>',
+@app.delete('/api/management/v1/users/<uuid:id>',
          summary='Delete user by id',
          operation_id='delete_user_by_id',
          security=security,
@@ -62,4 +62,6 @@ def api_v1_users_patch(path: UserPath, body: UpdateUser, user_service: UserServi
          })
 @api_function(required_permission=Users.delete)
 def api_v1_users_delete(path: UserPath, user_service: UserService):
-    return http.not_found()
+    user = user_service.delete_user(path.id)
+
+    return http.ok(user)

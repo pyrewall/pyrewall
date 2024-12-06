@@ -21,7 +21,7 @@ from pyrewall.core.permissions import Users
 class UserByUsernamePath(BaseModel):
     username: str
 
-@app.get('/api/v1/users/by-username/<username>',
+@app.get('/api/management/v1/users/by-username/<username>',
          summary='Get user by username',
          operation_id='get_user_by_username',
          security=security,

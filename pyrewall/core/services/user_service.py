@@ -38,6 +38,10 @@ class UserService(ABC):
     def update_user(self, user_id: UUID, updated_user: UpdateUser) -> User:
         raise NotImplementedError()
 
+    @abstractmethod
+    def delete_user(self, user_id: UUID) -> User:
+        raise NotImplementedError()
+
 class UserServiceImpl(UserService):
     _db: DatabaseSession
     _user_context: UserContext
@@ -49,7 +53,7 @@ class UserServiceImpl(UserService):
         self._db = db
         self._user_context = user_context
 
-    def _db_to_model(self, db_user: DBUser) -> User | None:
+    def _db_to_model(self, db_user: DBUser | None) -> User | None:
         if db_user is None:
             return None
         
@@ -116,6 +120,29 @@ class UserServiceImpl(UserService):
         
     
     def update_user(self, user_id: UUID, updated_user: UpdateUser) -> User:
-        return super().update_user(user_id, updated_user)
+        user = self._db.session.query(DBUser).filter(DBUser.id == user_id).one()
+
+        if updated_user.enabled:
+            user.enabled = updated_user.enabled
+        if updated_user.email:
+            user.email = updated_user.email
+        if updated_user.full_name:
+            user.full_name = updated_user.full_name
+        if updated_user.expires:
+            user.expires = updated_user.expires
+        if updated_user.password:
+            user.password = hashing_context.hash(updated_user.password)
+
+        self._db.session.commit()
+        return self._db_to_model(user)
+
+
+    def delete_user(self, user_id: UUID) -> User:
+        user = self._db.session.query(DBUser).filter(DBUser.id == user_id).one()
+
+        self._db.session.delete(user)
+        self._db.session.commit()
+
+        return self._db_to_model(user)
 
 di.register_scoped(UserService, UserServiceImpl)

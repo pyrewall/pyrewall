@@ -25,7 +25,14 @@ export type User = {
   unix_id: number;
   username: string;
 };
-export type UserList = Array<User>;
+export type PermissionList = Array<Permission>;
+export type Permission = {
+  action: string;
+  description: string;
+  entity: string;
+  permission: string;
+  title: string;
+};
 
 const LoginRequest = z
   .object({ password: z.string(), username: z.string() })
@@ -74,17 +81,25 @@ const ValidationErrorModel = z
   })
   .partial()
   .passthrough();
-const UserList: z.ZodType<UserList> = z.array(User);
-const CreateUser = z
+const Permission: z.ZodType<Permission> = z
   .object({
-    email: z.union([z.string(), z.null()]).optional(),
-    enabled: z.boolean(),
-    expires: z.union([z.string(), z.null()]).optional(),
-    full_name: z.union([z.string(), z.null()]).optional(),
-    password: z.string(),
-    unix_id: z.union([z.number(), z.null()]).optional(),
-    username: z.string(),
+    action: z.string(),
+    description: z.string(),
+    entity: z.string(),
+    permission: z.string(),
+    title: z.string(),
   })
+  .passthrough();
+const PermissionList: z.ZodType<PermissionList> = z.array(Permission);
+const UpdateUser = z
+  .object({
+    email: z.union([z.string(), z.null()]),
+    enabled: z.union([z.boolean(), z.null()]),
+    expires: z.union([z.string(), z.null()]),
+    full_name: z.union([z.string(), z.null()]),
+    password: z.union([z.string(), z.null()]),
+  })
+  .partial()
   .passthrough();
 
 export const schemas = {
@@ -93,14 +108,15 @@ export const schemas = {
   User,
   AuthenticatedUser,
   ValidationErrorModel,
-  UserList,
-  CreateUser,
+  Permission,
+  PermissionList,
+  UpdateUser,
 };
 
 export const AuthenticationEndpoints = makeApi([
   {
     method: "post",
-    path: "/api/v1/auth/login",
+    path: "/api/auth/v1/login",
     alias: "auth_login",
     requestFormat: "json",
     parameters: [
@@ -135,10 +151,10 @@ export const useAuthenticationApi = () => {
 export const PermssionsEndpoints = makeApi([
   {
     method: "get",
-    path: "/api/v1/permissions",
+    path: "/api/management/v1/permissions",
     alias: "get_permissions_list",
     requestFormat: "json",
-    response: z.void(),
+    response: z.array(Permission),
   },
 ]);
 
@@ -155,22 +171,15 @@ export const usePermssionsApi = () => {
 
 export const UserEndpoints = makeApi([
   {
-    method: "get",
-    path: "/api/v1/users",
-    alias: "get_users_list",
-    requestFormat: "json",
-    response: z.array(User),
-  },
-  {
-    method: "post",
-    path: "/api/v1/users",
-    alias: "create_user",
+    method: "delete",
+    path: "/api/management/v1/users/:id",
+    alias: "delete_user_by_id",
     requestFormat: "json",
     parameters: [
       {
-        name: "body",
-        type: "Body",
-        schema: CreateUser,
+        name: "id",
+        type: "Path",
+        schema: z.string().uuid(),
       },
     ],
     response: User,
@@ -184,10 +193,36 @@ export const UserEndpoints = makeApi([
   },
   {
     method: "get",
-    path: "/api/v1/users/:id",
+    path: "/api/management/v1/users/:id",
     alias: "get_user_by_id",
     requestFormat: "json",
     parameters: [
+      {
+        name: "id",
+        type: "Path",
+        schema: z.string().uuid(),
+      },
+    ],
+    response: User,
+    errors: [
+      {
+        status: 422,
+        description: `Unprocessable Entity`,
+        schema: z.array(ValidationErrorModel),
+      },
+    ],
+  },
+  {
+    method: "patch",
+    path: "/api/management/v1/users/:id",
+    alias: "get_user_by_id",
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "body",
+        type: "Body",
+        schema: UpdateUser,
+      },
       {
         name: "id",
         type: "Path",

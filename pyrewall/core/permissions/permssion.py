@@ -24,7 +24,9 @@ class Permission:
     @staticmethod
     def from_str(permission_str: str) -> "Permission":
         perm_parts = permission_str.split(':')
-        new_perm = Permission()
+        if len(perm_parts) != 2:
+            raise ValueError('Invalid permission string')
+        new_perm = Permission('Parsed From String')
         new_perm.init(perm_parts[0], perm_parts[1])
         return new_perm
     

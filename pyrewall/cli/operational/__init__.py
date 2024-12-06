@@ -8,8 +8,8 @@ class OperationalCli(PyrewallCmd):
         super().__init__(completekey, stdin, stdout)
 
         # TODO get user
-        username = env['USER']
-        hostname = env['HOSTNAME']
+        username = env.get('USER', '<missing>')
+        hostname = env.get('HOSTNAME', '<missing>')
 
         self.prompt = f'{username}@{hostname}> '
 

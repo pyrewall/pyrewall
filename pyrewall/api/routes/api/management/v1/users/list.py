@@ -17,7 +17,7 @@ from pyrewall.utils import http
 
 from pyrewall.core.permissions import Users
 
-@app.get('/api/v1/users',
+@app.get('/api/management/v1/users',
          summary='Get all users',
          operation_id='get_users_list',
          security=security,
@@ -31,15 +31,17 @@ def api_v1_users_list(user_service: UserService):
 
     return http.ok(users)
 
-@app.post('/api/v1/users',
+@app.post('/api/management/v1/users',
           summary='Create new user',
           operation_id='create_user',
           security=security,
           tags=[user_tag],
           responses={
-              200: User
+              201: User
           })
 @api_function(required_permission=Users.create)
 def api_v1_users_post(body:CreateUser, user_service: UserService):
-    raise NotImplementedError()
+    user = user_service.create_user(body)
+
+    return http.created(user)
 

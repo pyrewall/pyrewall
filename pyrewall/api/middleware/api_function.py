@@ -22,9 +22,9 @@ def api_function(require_auth: bool = True, required_permission: Permission = No
                 user_context = di.get_instance(UserContext)
                 user_context.setup_context(require_auth)
 
-                if require_auth or required_permission is not None:
+                if require_auth and required_permission is not None:
                     if required_permission not in user_context.permissions:
-                        raise Forbidden(f'User doen\'t have {required_permission}.')
+                        raise Forbidden(f'User doesn\'t have {required_permission}.')
                     else:
                         print(required_permission)
                         if _logger.isEnabledFor(logging.DEBUG):
