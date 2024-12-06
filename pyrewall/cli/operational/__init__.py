@@ -25,5 +25,8 @@ class OperationalCli(PyrewallCmd):
         else:
             system(args)
 
+    def do_configuration(self, args):
+        pass
+
     def do_exit(self, args):
         return True
