@@ -70,6 +70,8 @@ def setup_local_admin_user_group(db: DatabaseSession):
         user_group = UserGroup()
         user_group.user_id = admin_user.id
         user_group.group_id = admin_group.id
+        user_group.created_by = admin_user.id
+        user_group.modified_by = admin_user.id
         db.session.add(user_group)
         db.session.commit()
 
