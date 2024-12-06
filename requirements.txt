@@ -5,7 +5,7 @@ SQLAlchemy[postgresql-psycopg]==2.0.32
 httpx[http2]==0.28.0
 alembic==1.13.2
 strenum==0.4.15
-sentry-sdk==2.13.0
+sentry-sdk==2.19.1
 grpcio==1.66.1
 gunicorn==23.0.0
 python-dotenv==1.0.1
