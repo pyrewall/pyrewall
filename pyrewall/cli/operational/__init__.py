@@ -2,6 +2,7 @@ from typing import IO
 from os import environ as env, system
 
 from ..pyrewall_cmd import PyrewallCmd
+from ..configuration import ConfigurationCli
 
 class OperationalCli(PyrewallCmd):
     def __init__(self, completekey: str = "tab", stdin: IO[str] | None = None, stdout: IO[str] | None = None) -> None:
@@ -26,7 +27,8 @@ class OperationalCli(PyrewallCmd):
             system(args)
 
     def do_configuration(self, args):
-        pass
+        config = ConfigurationCli()
+        config.cmdloop()
 
     def do_exit(self, args):
         return True

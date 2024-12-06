@@ -4,9 +4,8 @@ from pyrewall.core.dependency_injection import di
 
 class PyrewallCmd(Cmd):
     
-    def onecmd(self, line: str) -> bool:
-        print(f'LINE: {line}')
-        return super().onecmd(line)
+    # def onecmd(self, line: str) -> bool:
+    #     return super().onecmd(line)
 
     def default(self, line):
         cmd, arg, line = self.parseline(line)
@@ -18,6 +17,7 @@ class PyrewallCmd(Cmd):
             return func(arg)
 
         return super().default(line)
+    
     # def precmd(self, line: str) -> str:
     #     di._scope_cache.setup_cache()
     #     return super().precmd(line)
