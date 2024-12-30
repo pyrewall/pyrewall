@@ -23,6 +23,32 @@ class PyrewallCmd(Cmd):
 
         return super().default(line)
     
+    def do_help(self, arg):
+        'List available commands with "help" or detailed help with "help cmd".'
+        if arg:
+            # XXX check arg syntax
+            try:
+                func = getattr(self, 'help_' + arg)
+            except AttributeError:
+                try:
+                    doc=getattr(self, 'do_' + arg).__doc__
+                    if doc:
+                        self.stdout.write("%s\n"%str(doc))
+                        return
+                except AttributeError:
+                    try:
+                        cmds = list(filter(lambda f: f.startswith(f'do_{arg}'), self.get_names()))
+                        if len(cmds) == 1:
+                            func = getattr(self, cmds[0].replace('do_', 'help_'))
+                            return func()
+                    except AttributeError:
+                        pass
+                self.stdout.write("%s\n"%str(self.nohelp % (arg,)))
+                return
+            func()
+        else:
+            return super().do_help(arg)
+    
     # def precmd(self, line: str) -> str:
     #     di._scope_cache.setup_cache()
     #     return super().precmd(line)
