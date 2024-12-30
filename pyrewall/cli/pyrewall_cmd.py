@@ -15,6 +15,11 @@ class PyrewallCmd(Cmd):
         if len(cmds) == 1:
             func = getattr(self, cmds[0])
             return func(arg)
+        
+        if len(cmds) > 1:
+            print(f'Ambugous command: {line}')
+            print('Did you mean?')
+            print(f'  {'  '.join([s[3:] for s in cmds])}')
 
         return super().default(line)
     
