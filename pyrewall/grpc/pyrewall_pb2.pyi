@@ -13,3 +13,15 @@ class SystemInfoResponse(_message.Message):
     HOSTNAME_FIELD_NUMBER: _ClassVar[int]
     hostname: str
     def __init__(self, hostname: _Optional[str] = ...) -> None: ...
+
+class ConfigVersionInfo(_message.Message):
+    __slots__ = ("version",)
+    VERSION_FIELD_NUMBER: _ClassVar[int]
+    version: str
+    def __init__(self, version: _Optional[str] = ...) -> None: ...
+
+class ConfigApplicationStatus(_message.Message):
+    __slots__ = ("applied",)
+    APPLIED_FIELD_NUMBER: _ClassVar[int]
+    applied: bool
+    def __init__(self, applied: bool = ...) -> None: ...

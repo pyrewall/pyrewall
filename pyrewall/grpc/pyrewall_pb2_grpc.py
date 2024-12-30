@@ -5,7 +5,7 @@ import warnings
 
 import pyrewall_pb2 as pyrewall__pb2
 
-GRPC_GENERATED_VERSION = '1.66.1'
+GRPC_GENERATED_VERSION = '1.68.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -86,6 +86,78 @@ class SystemInfo(object):
             '/pyrewall.SystemInfo/GetSystemInfo',
             pyrewall__pb2.voidNoArgs.SerializeToString,
             pyrewall__pb2.SystemInfoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class ConfigurationStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.ApplyConfigurationVersion = channel.unary_unary(
+                '/pyrewall.Configuration/ApplyConfigurationVersion',
+                request_serializer=pyrewall__pb2.ConfigVersionInfo.SerializeToString,
+                response_deserializer=pyrewall__pb2.ConfigApplicationStatus.FromString,
+                _registered_method=True)
+
+
+class ConfigurationServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def ApplyConfigurationVersion(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_ConfigurationServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'ApplyConfigurationVersion': grpc.unary_unary_rpc_method_handler(
+                    servicer.ApplyConfigurationVersion,
+                    request_deserializer=pyrewall__pb2.ConfigVersionInfo.FromString,
+                    response_serializer=pyrewall__pb2.ConfigApplicationStatus.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'pyrewall.Configuration', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('pyrewall.Configuration', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class Configuration(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def ApplyConfigurationVersion(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/pyrewall.Configuration/ApplyConfigurationVersion',
+            pyrewall__pb2.ConfigVersionInfo.SerializeToString,
+            pyrewall__pb2.ConfigApplicationStatus.FromString,
             options,
             channel_credentials,
             insecure,

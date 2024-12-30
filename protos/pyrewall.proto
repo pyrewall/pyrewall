@@ -11,3 +11,16 @@ message voidNoArgs {}
 message SystemInfoResponse {
     string hostname = 1;
 }
+
+service Configuration {
+    rpc ApplyConfigurationVersion (ConfigVersionInfo) returns (ConfigApplicationStatus);
+}
+
+message ConfigVersionInfo {
+    string version = 1;
+    
+}
+
+message ConfigApplicationStatus {
+    bool applied = 1;
+}
