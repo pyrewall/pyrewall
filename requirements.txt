@@ -14,7 +14,7 @@ passlib==1.7.4
 argon2-cffi==23.1.0
 webauthn==2.1.0
 pyrad==2.4
-pyjwt[crypto]==2.9.0
+pyjwt[crypto]==2.10.1
 ldap3==2.9.1
 psutil==6.1.0
 
