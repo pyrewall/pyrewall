@@ -6,7 +6,7 @@ httpx[http2]==0.28.0
 alembic==1.14.0
 strenum==0.4.15
 sentry-sdk==2.19.1
-grpcio==1.66.1
+grpcio==1.70.0
 gunicorn==23.0.0
 python-dotenv==1.0.1
 uuid7==0.1.0
