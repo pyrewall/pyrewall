@@ -3,7 +3,7 @@ flask-cors==5.0.0
 flask-openapi3==4.0.3
 SQLAlchemy[postgresql-psycopg]==2.0.37
 httpx[http2]==0.28.1
-alembic==1.14.0
+alembic==1.14.1
 strenum==0.4.15
 sentry-sdk==2.19.1
 grpcio==1.70.0
