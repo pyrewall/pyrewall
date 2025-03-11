@@ -25,6 +25,9 @@ class OperationalCli(PyrewallCmd):
             system("bash")
         else:
             system(args)
+    
+    def do_show(self, args):
+        pass
 
     def do_configuration(self, args):
         config = ConfigurationCli()
