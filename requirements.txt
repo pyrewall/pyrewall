@@ -1,12 +1,11 @@
-flask==3.0.3
+flask==3.1.0
 flask-cors==5.0.0
-flask-openapi3==4.0.3
-SQLAlchemy[postgresql-psycopg]==2.0.32
-httpx[http2]==0.28.0
+flask-openapi3==4.1.0
+SQLAlchemy[postgresql-psycopg]==2.0.38
+httpx[http2]==0.28.1
 alembic==1.14.0
 strenum==0.4.15
 sentry-sdk==2.19.1
-grpcio==1.66.1
 gunicorn==23.0.0
 python-dotenv==1.0.1
 uuid7==0.1.0
@@ -17,5 +16,6 @@ pyrad==2.4
 pyjwt[crypto]==2.9.0
 ldap3==2.9.1
 psutil==6.1.0
+filelock==3.18.0
 
-pydepinj @ git+https://github.com/thebmw/pydepinj.git@v0.4.0
+pydepinj==0.4.1
