@@ -35,3 +35,6 @@ class OperationalCli(PyrewallCmd):
 
     def do_exit(self, args):
         return True
+    
+    def do_shutdown(self, args):
+        system()

@@ -1,4 +1,6 @@
 from pydantic import BaseModel
 
+from .system import System
+
 class ConfigRoot(BaseModel):
-    pass
+    system: System

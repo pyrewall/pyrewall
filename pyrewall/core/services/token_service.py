@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime, UTC, timedelta
 from uuid import UUID
 
-from ..config import PYREWALL_CONFIG_DIR
+from ..env import PYREWALL_CONFIG_DIR
 from ..dependency_injection import di
 
 class TokenService(ABC):
